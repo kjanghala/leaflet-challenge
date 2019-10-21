@@ -9,3 +9,21 @@ var myMap = L.map("map", {
     id: "mapbox.streets",
     accessToken: API_KEY
   }).addTo(myMap);
+  
+  var newtry = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+  
+  d3.json(newtry, function(response) {
+  
+    console.log(response);
+    var num_feats = response.features
+    for (var i = 0; i < num_feats.length; i++) {
+         var ph1 = num_feats[i];
+         var location = ph1.geometry
+  
+      if (location) {
+        L.marker([location.coordinates[1], location.coordinates[0]]).addTo(myMap);
+      }
+    }
+  
+  });
+  
