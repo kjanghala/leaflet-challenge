@@ -14,6 +14,7 @@ var myMap = L.map("map", {
   
     
   function chooseColor(x) {
+    x = x*15
     switch (true) {
     case (x < 10):
       return "green";
@@ -32,6 +33,16 @@ var myMap = L.map("map", {
     }
   };
   
+  function chooseSize(x) {
+    x = x*200
+    switch(true) {
+     case (x > 0):
+        return x
+     default:
+        return 1
+    }
+  };
+  
   d3.json(newtry, function(response) {
   
     console.log(response);
@@ -39,15 +50,15 @@ var myMap = L.map("map", {
     var num_feats = response.features
     for (var i = 0; i < num_feats.length; i++) {
          var location = num_feats[i].geometry;
-         var magnitude = (num_feats[i].properties.mag)*15;
+         var magnitude = num_feats[i].properties.mag;
       
       if (location) {
-        console.log(magnitude)
+        console.log(magnitude);
         L.circle([location.coordinates[1], location.coordinates[0]], {
           color:chooseColor(magnitude),
-          fillOpacity: 0.5,
-          radius: magnitude
-        }).addTo(myMap);
+          radius: 500
+        }).bindPopup("<h3> Magnitude:" + magnitude + "</h3> <hr> <p>Location: " + num_feats[i].properties.place + "</p>")
+        .addTo(myMap);
       }
     }
   
